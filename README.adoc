@@ -1,0 +1,3 @@
+= RH423 RHDS 11.x on RHEL 8.5 Lab Playbooks
+
+Contains updated playbooks to be used in the RH423 course. This repository provides a method to update the WS362 workstation playbooks dynamically as part of the START/STOP lab scripts.
