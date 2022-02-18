@@ -44,7 +44,6 @@ description: Fictitious characters from television shows or movies
 uniqueMember: uid=dscully,ou=Clients,dc=lab,dc=example,dc=com
 uniqueMember: uid=slayer,ou=Clients,dc=lab,dc=example,dc=com
 
-version: 1
 dn: o=Red Hat TV,ou=Clients,dc=lab,dc=example,dc=com
 objectclass: organization
 objectclass: top
