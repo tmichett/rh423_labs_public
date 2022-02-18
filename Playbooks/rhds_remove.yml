@@ -8,6 +8,13 @@
   tasks:
     # consider options to determine any existing instance_name from system
 
+    - name: instances are stopped
+      command: 'dsctl {{ item }} stop'
+      # consider failed_when and changed_when
+      ignore_errors: true
+      loop: "{{ instance_names }}"
+      # explore errors if instance does not exist
+
     - name: instances are removed
       command: 'dsctl {{ item }} remove --do-it'
       # consider failed_when and changed_when
