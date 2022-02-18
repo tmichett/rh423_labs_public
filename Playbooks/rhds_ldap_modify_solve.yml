@@ -1,0 +1,11 @@
+---
+- name: Solve the steps of rhds-ldap-modify GE
+  hosts: rhds
+  tasks:
+     - name: remove ou=Clients tree
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         delete_dns:
+             - ou=Clients,dc=lab,dc=example,dc=com
+       ignore_errors: true
+

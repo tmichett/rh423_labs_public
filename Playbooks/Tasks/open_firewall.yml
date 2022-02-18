@@ -1,0 +1,26 @@
+    - name: firewall RHDS related ports are open
+      block:
+
+      # verify firewalld installed
+      # verify firewalld started
+
+      - name: firewalld allows 389/tcp and 636/tcp
+        # RHDS install guide uses ports. could use service ldap and ldaps
+        firewalld:
+          port: "{{ item }}"
+          permanent: true
+          state: enabled
+          immediate: true
+        loop:
+          - 389/tcp
+          - 636/tcp
+
+      - name: firewalld allows cockpit
+        firewalld:
+          service: "{{ item }}"
+          permanent: true
+          state: enabled
+          immediate: true
+        loop:
+          - cockpit
+

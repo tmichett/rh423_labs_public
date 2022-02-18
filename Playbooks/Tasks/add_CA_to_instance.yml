@@ -1,0 +1,42 @@
+# Requires variable instance_name
+
+- name: configure CA certificate
+  block:
+
+     - name: look for existing CA cert
+       command: dsconf {{ instance_name }} security ca-certificate list 
+       register: server_ca_cert_list
+
+     - name: fail if not found
+       assert: 
+         that: server_ca_cert_list.stdout.find('RH423CA') != -1
+         success_msg: CA cert appears to exist, no need to import.
+         fail_msg: CA cert not found, continue to adding to instance.
+
+  rescue:
+
+     - name: copy CA cert to {{ instance_name }} host
+       copy:
+         src: /tmp/rh423-ca.crt
+         dest: /tmp/rh423-ca.crt
+         owner: student
+         group: student
+         mode: 0664
+
+     - name: import CA cert
+       command: dsconf {{ instance_name }} security ca-certificate add --file /tmp/rh423-ca.crt --name RH423CA
+
+     - name: set the trust options for the ca cert
+       command: dsconf {{ instance_name }} security ca-certificate set-trust-flags --flags "CT,," RH423CA
+
+  - name: configure CA Trust Database
+    block:
+
+     - name: copy CA cert to host
+       copy:
+          src: /tmp/rh423-ca.crt
+          dest: /etc/pki/ca-trust/source/anchors/
+
+     - name: update ca trust 
+       command: update-ca-trust
+

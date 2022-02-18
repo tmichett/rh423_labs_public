@@ -1,0 +1,5 @@
+    - name: appstream/packages are removed
+      dnf:
+        name: '@redhat-ds:11'
+        state: absent
+

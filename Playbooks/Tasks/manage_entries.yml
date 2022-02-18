@@ -1,0 +1,19 @@
+
+- name: push LDIF files to RHDS
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/
+  loop: "{{ ldif_files }}"
+  when: ldif_files is defined
+
+- name: modify (add, change, delete) entries with each LDIF file.
+  command: ldapmodify -c -x -D "cn=Directory Manager" -w RedHat123 -f {{ item }}
+  loop: "{{ modify_ldifs }}"
+  when: modify_ldifs is defined
+
+- name: delete recursively portions of the tree
+  command: ldapdelete -c -x -D "cn=Directory Manager" -w RedHat123 -r {{ item }}
+  loop: "{{ delete_dns }}"
+  when: delete_dns is defined
+
+

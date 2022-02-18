@@ -1,0 +1,20 @@
+    - name: install RHDS related packages
+      block:
+
+      # verify repo available
+
+      - name: cockpit packages are installed
+        dnf:
+          name: 'cockpit'
+          state: present
+
+      - name: redhat-ds:11 appstream is installed
+        dnf:
+          name: '@redhat-ds:11'
+          state: present
+
+    - name: cockpit socket enabled
+      systemd:
+        name: cockpit.socket
+        state: started
+        enabled: yes

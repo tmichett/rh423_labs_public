@@ -1,0 +1,33 @@
+# Requires two variable: instance_name and force_clean
+
+- name: stop and remove the instance
+  block:
+    - name: stop the instance
+      command: 'dsctl {{ instance_name }} stop'
+
+    - name: remove the instance
+      command: 'dsctl {{ instance_name }} remove --do-it'
+
+- name: force remove residuals for a true clean start
+  block:
+
+    - name: force kill any remaining instances
+      command: 'killall ns-slapd'
+      ignore_errors: true
+
+    - name: appstream/packages are removed
+      dnf:
+        name: '@redhat-ds:11'
+        state: absent
+
+    - name: ensure no residual instances, suffixes, or databases
+      file:
+         path: "{{ item }}"
+         state: absent
+      loop:
+         - /etc/dirsrv
+         - /var/lib/dirsrv
+         - /var/log/dirsrv
+
+   when: force_cleanup
+

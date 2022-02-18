@@ -1,0 +1,19 @@
+    - name: firewalld disable ports 389/tcp and 636/tcp
+      # RHDS install guide uses ports so solutions use ports
+      firewalld:
+          port: "{{ item }}"
+          permanent: true
+          state: disabled
+      loop:
+          - 389/tcp
+          - 636/tcp
+
+    - name: firewalld disable services ldap and ldaps
+      # Students might use services instead of ports
+      firewalld:
+          service: "{{ item }}"
+          permanent: true
+          state: disabled
+      loop:
+          - ldap
+          - ldaps
