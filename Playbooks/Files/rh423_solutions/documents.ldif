@@ -1,13 +1,11 @@
 dn: cn=rhds_release,ou=Documents,dc=lab,dc=example,dc=com
 objectclass: document
 objectclass: top
-# required identifier, set manaually here but a plugin exists to help generate
 documentIdentifier: 1001
 cn: rhds_release
 description: Highlighted features and updates related to Red Hat Directory Server 11 (11.4)
 documentTitle: Red Hat Directory Server Release Notes
 documentVersion: 11.4
-# documentAuthor has to be a DN
 documentAuthor: uid=mmuehlfeld,ou=People,dc=lab,dc=example,dc=com
 documentLocation: http://materials.example.com/rhds_docs
 documentPublisher: Red Hat, Inc.

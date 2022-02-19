@@ -1,0 +1,13 @@
+---
+- name: Cleanup after Entries LAB in rhds-ldap-manage-entries finish
+  hosts: rhds
+  tasks:
+     - name: remove authors and document entries from directory.
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         modify_ldifs:
+            - delete_docs.ldif
+         delete_dns:
+            - ou=Documents,dc=lab,dc=example,dc=com
+       ignore_errors: true
+

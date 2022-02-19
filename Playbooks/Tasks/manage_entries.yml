@@ -1,13 +1,13 @@
 
 - name: push LDIF files to RHDS
   copy:
-    src: "{{ item }}"
+    src: Files/"{{ item }}"
     dest: /tmp/
-  loop: "{{ ldif_files }}"
-  when: ldif_files is defined
+  loop: "{{ modify_ldifs }}"
+  when: modify_ldifs is defined
 
 - name: modify (add, change, delete) entries with each LDIF file.
-  command: ldapmodify -c -x -D "cn=Directory Manager" -w RedHat123 -f {{ item }}
+  command: ldapmodify -c -x -D "cn=Directory Manager" -w RedHat123 -f /tmp/{{ item }}
   loop: "{{ modify_ldifs }}"
   when: modify_ldifs is defined
 

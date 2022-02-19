@@ -1,5 +1,3 @@
-# Authors of RHDS docs - taken from the 11.4 PDFs
-
 dn: uid=mmuehlfeld,ou=people,dc=lab,dc=example,dc=com
 objectclass: inetOrgPerson
 objectclass: organizationalPerson
