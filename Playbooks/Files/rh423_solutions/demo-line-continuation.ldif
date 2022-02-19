@@ -1,0 +1,12 @@
+
+# demo_group, groups, lab.example.com
+dn: cn=demo_group,ou=groups,dc=lab,dc=example,dc=com
+description: A long description might be 
+ written across multiple lines
+ to make it easier to read
+  in the LDIF file 
+
+
+results in:
+A long description might be written across multiple linesto make it easier to read in the LDIF file 
+
