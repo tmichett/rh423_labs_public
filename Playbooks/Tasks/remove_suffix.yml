@@ -1,0 +1,5 @@
+- name: remove backend suffix
+  shell: echo "Yes I am sure" | dsconf {{ instance_name }} backend delete {{ db_name }}
+  when: db_name in list_suffixes.stdout
+
+

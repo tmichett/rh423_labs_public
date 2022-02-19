@@ -1,0 +1,21 @@
+---
+- name: cleanup before and after rhds-ldap-suffixes GE
+  hosts: rhds
+  vars:
+     instance_name: rh423     
+  tasks:
+     - name: get list of backend suffixes
+       command:  dsconf {{ instance_name }} backend suffix list
+       register: list_suffixes
+
+     - name: remove remote suffix
+       import_tasks: Tasks/remove_suffix.yml
+       vars:
+          db_name: remote
+
+     - name: remove projects suffix
+       import_tasks: Tasks/remove_suffix.yml
+       vars:
+          db_name: projects
+
+
