@@ -1,0 +1,9 @@
+dn: cn=schema
+attributetypes: ( dateofbirth-oid NAME 'dateofbirth'
+  DESC 'For employee birthdays'
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ORIGIN 'Example defined')
+objectclasses: (2.16.840.1.117370.999.1.2.5 NAME 'exampleEntry'
+  DESC 'Standard Entry Object Class' SUP top AUXILIARY
+  MAY (exampleDateOfBirth $ examplePreferredOS $
+  exampleBuildingFloor $ exampleVicePresident) )
+

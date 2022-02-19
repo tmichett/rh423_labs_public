@@ -1,4 +1,5 @@
 dn: o=RH423,dc=lab,dc=example,dc=com
+changetype: add
 objectclass: organization
 objectclass: top
 objectclass: rh423project
