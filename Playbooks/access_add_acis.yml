@@ -2,6 +2,9 @@
 # Optional variables in Tasks/managed_entries: 
 # modify_ldifs delete_dns add_entries_ldifs 
 
+# consider making sure the setup was done and not altered:
+# - import_playbook: manage_roles_solve.yml
+
 - name: Solves create-aci GE
   hosts: rhds
   tasks:
