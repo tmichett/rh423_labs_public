@@ -1,0 +1,59 @@
+---
+# Optional variables in Tasks/managed_entries: 
+# modify_ldifs delete_dns add_entries_ldifs 
+
+- name: Ensure entries are created before rhds-create-aci GE
+  hosts: rhds
+  vars:
+     instance_name: rh423
+  tasks:
+
+     - name: configure MemberOf plugin
+       block:
+
+       - name: enable MemberOf plugin
+         command: dsconf {{ instance_name }} plugin memberof enable
+
+       - name: restart the instance
+         command: dsctl {{ intance_name }} restart
+
+     - name: Add entries
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         add_entries_ldifs:
+            - rh423_solutions/Projects.ldif
+         modify_ldifs:
+            - add_access_groups.ldif
+
+     - name: configure automember plugin
+       block:
+
+       - name: Delete definition - ignore does not exist error
+         command: dsconf rh423 plugin automember definition docs delete
+         ignore_errors: true
+
+       - name: Add automember definition
+         command: >
+             dsconf {{ intance_name }} plugin automember definition docs add 
+             --default-group "cn=documents,ou=groups,dc=lab,dc=example,dc=com" 
+             --scope "ou=Documents,dc=lab,dc=example,dc=com"
+             --filter "objectclass=document" 
+             --grouping-attr "member:dn"
+
+       - name: restart the instance
+         command: dsctl {{ intance_name }} restart
+
+       - name: Add Documents 
+         import_tasks: Tasks/manage_entries.yml
+         vars:
+           add_entries_ldifs:
+              - rh423_solutions/RHDS_Documents.ldif
+
+
+     - name: configure roles
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         modify_ldifs:
+            - rh423_solutions/setup-role.ldif
+
+

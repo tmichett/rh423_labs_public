@@ -10,3 +10,10 @@ member: uid=abergin,ou=People,ou=Projects,dc=lab,dc=example,dc=com
 member: uid=jwalker,ou=People,ou=Projects,dc=lab,dc=example,dc=com
 member: uid=trigden,ou=People,ou=Projects,dc=lab,dc=example,dc=com
 
+dn: cn=documents,ou=Groups,ou=Projects,dc=lab,dc=example,dc=com
+changetype: add
+objectClass: top
+objectClass: groupOfNames
+objectClass: nsMemberOf
+cn: documents
+
