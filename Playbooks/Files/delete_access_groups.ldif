@@ -1,11 +1,5 @@
 # For use with ldapmodify
 
-dn: cn=devops,ou=Groups,ou=Projects,dc=lab,dc=example,dc=com
-changetype: delete
-
-dn: cn=documents,ou=groups,dc=lab,dc=example,dc=com
-changetype: delete
-
 dn: cn=docs,cn=Auto Membership Plugin,cn=plugins,cn=config
 changetype: delete
 
