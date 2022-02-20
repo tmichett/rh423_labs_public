@@ -10,7 +10,7 @@ member: uid=abergin,ou=People,ou=Projects,dc=lab,dc=example,dc=com
 member: uid=jwalker,ou=People,ou=Projects,dc=lab,dc=example,dc=com
 member: uid=trigden,ou=People,ou=Projects,dc=lab,dc=example,dc=com
 
-dn: cn=documents,dc=lab,dc=example,dc=com
+dn: cn=documents,ou=groups,dc=lab,dc=example,dc=com
 changetype: add
 objectClass: top
 objectClass: groupOfNames
