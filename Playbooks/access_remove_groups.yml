@@ -17,6 +17,7 @@
        vars:
          modify_ldifs:
             - delete_access_groups.ldif
+            - delete_docs.ldif
          delete_dns:
             - ou=Projects,dc=lab,dc=example,dc=com
             - ou=Documents,dc=lab,dc=example,dc=com

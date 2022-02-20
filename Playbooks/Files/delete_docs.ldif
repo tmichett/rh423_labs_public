@@ -1,25 +1,37 @@
-cn=rhds_release,ou=Documents,dc=lab,dc=example,dc=com
+dn: cn=rhds_release,ou=Documents,dc=lab,dc=example,dc=com
+changetype: delete
 
-cn=rhds_install,ou=Documents,dc=lab,dc=example,dc=com
+dn: cn=rhds_install,ou=Documents,dc=lab,dc=example,dc=com
+changetype: delete
 
-cn=rhds_admin,ou=Documents,dc=lab,dc=example,dc=com
+dn: cn=rhds_admin,ou=Documents,dc=lab,dc=example,dc=com
+changetype: delete
 
-cn=rhds_deploy,ou=Documents,dc=lab,dc=example,dc=com
+dn: cn=rhds_deploy,ou=Documents,dc=lab,dc=example,dc=com
+changetype: delete
 
-cn=rhds_commands,ou=Documents,dc=lab,dc=example,dc=com
+dn: cn=rhds_commands,ou=Documents,dc=lab,dc=example,dc=com
+changetype: delete
 
-cn=rhds_tuning,ou=Documents,dc=lab,dc=example,dc=com
+dn: cn=rhds_tuning,ou=Documents,dc=lab,dc=example,dc=com
+changetype: delete
 
-ou=Documents,dc=lab,dc=example,dc=com
+dn: ou=Documents,dc=lab,dc=example,dc=com
+changetype: delete
 
-uid=mmuehlfeld,ou=people,dc=lab,dc=example,dc=com
+dn: uid=mmuehlfeld,ou=people,dc=lab,dc=example,dc=com
+changetype: delete
 
-uid=pbokoc,ou=people,dc=lab,dc=example,dc=com
+dn: uid=pbokoc,ou=people,dc=lab,dc=example,dc=com
+changetype: delete
 
-uid=tcapek,ou=people,dc=lab,dc=example,dc=com
+dn: uid=tcapek,ou=people,dc=lab,dc=example,dc=com
+changetype: delete
 
-uid=dballard,ou=people,dc=lab,dc=example,dc=com
+dn: uid=dballard,ou=people,dc=lab,dc=example,dc=com
+changetype: delete
 
-uid=pkovar,ou=people,dc=lab,dc=example,dc=com
+dn: uid=pkovar,ou=people,dc=lab,dc=example,dc=com
+changetype: delete
 
 
