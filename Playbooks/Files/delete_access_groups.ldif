@@ -12,4 +12,24 @@ changetype: delete
 dn: cn=RHDSAuthors,ou=people,dc=lab,dc=example,dc=com
 changetype: delete
 
+dn: uid=mmuehlfeld,ou=people,dc=lab,dc=example,dc=com
+changetype: modify
+delete: nsRoleDN
+
+dn: uid=pbokoc,ou=people,dc=lab,dc=example,dc=com
+changetype: modify
+delete: nsRoleDN
+
+dn: uid=tcapek,ou=people,dc=lab,dc=example,dc=com
+changetype: modify
+delete: nsRoleDN
+
+dn: uid=dballard,ou=people,dc=lab,dc=example,dc=com
+changetype: modify
+delete: nsRoleDN
+
+dn: uid=pkovar,ou=people,dc=lab,dc=example,dc=com
+changetype: modify
+delete: nsRoleDN
+
 
