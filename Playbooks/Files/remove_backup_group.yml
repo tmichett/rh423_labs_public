@@ -1,0 +1,22 @@
+dn: uid=student,ou=People,dc=lab,dc=example,dc=com
+changetype: delete
+
+
+dn: cn=backup_users,ou=groups,dc=lab,dc=example,dc=com
+changetype: delete
+
+dn: cn=config
+changetype: modify
+delete: aci
+aci: (target = "ldap:///cn=backup,cn=tasks,cn=config")(targetattr="*")
+  (version 3.0 ; acl "permission: Allow the backup_users group to create 
+  backup tasks" ; allow (add, read, search) 
+  groupdn = "ldap:///cn=backup_users,ou=groups,dc=lab,dc=example,dc=com";)
+-
+delete: aci
+aci: (target = "ldap:///cn=config")(targetattr = "nsslapd-bakdir ||
+  objectClass") (version 3.0 ; acl "permission: Allow the backup_users 
+  group to access bakdir attribute" ; allow (read,search) 
+  groupdn = "ldap:///cn=backup_users,ou=groups,dc=lab,dc=example,dc=com";)
+
+

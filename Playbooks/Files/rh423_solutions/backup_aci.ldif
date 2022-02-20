@@ -1,0 +1,18 @@
+# group can  read, search, and add attributes to cn=backup,cn=tasks,cn=config.
+dn: cn=config
+changetype: modify
+add: aci
+aci: (target = "ldap:///cn=backup,cn=tasks,cn=config")(targetattr="*")
+  (version 3.0 ; acl "permission: Allow the backup_users group to create 
+  backup tasks" ; allow (add, read, search) 
+  groupdn = "ldap:///cn=backup_users,ou=groups,dc=lab,dc=example,dc=com";)
+
+# group can look up the value of the nssladp-bakdir configuration attribute.
+dn: cn=config
+changetype: modify
+add: aci
+aci: (target = "ldap:///cn=config")(targetattr = "nsslapd-bakdir ||
+  objectClass") (version 3.0 ; acl "permission: Allow the backup_users 
+  group to access bakdir attribute" ; allow (read,search) 
+  groupdn = "ldap:///cn=backup_users,ou=groups,dc=lab,dc=example,dc=com";)
+

@@ -1,0 +1,13 @@
+---
+# Optional variables in Tasks/managed_entries: 
+# modify_ldifs delete_dns add_entries_ldifs 
+
+- name: Cleanup before access lab. Ensure user, group, ACI deleted
+  hosts: rhds
+  tasks:
+     - name: remove entries and attributes
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         modify_ldifs:
+            - remove_backup_group.yml
+

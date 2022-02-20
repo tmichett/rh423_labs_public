@@ -1,0 +1,45 @@
+# Add user with password
+dn: uid=student,ou=People,dc=lab,dc=example,dc=com
+changetype: add
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+uid: student
+cn: Student User
+sn: User
+userPassword:: e1BCS0RGMl9TSEEyNTZ9QUFBSUFOTWdxQnJ3am9kZm5ZTHY3Nmk4SHNTcnltbXh
+ ObWo4M3gwb211c051NHlQQ3NxVFI5NVNndG9pOEEwNmEwUTNpOVhBMkYxQTEySi9ydVRPSjYzYi9s
+ dktsRDBSNFc0YzJlVmdsTmZwT2ZoMS9nRmJ5dEE1Y1lPUlhlcmNZRlcweXJXNk10aHRWQ1lJMldhd
+ VZVV1IrZjdMMG9aKzRvRUxWbFMxODJEK1BYeXMyeHduV1VVcFNyWVJRbnVRTGhFS0t3NGJrbEZmMk
+ FZVmNacFBTd0xacXhBcm1rUXE2VlMrUENoalZjRy9ydVFBRFAxQVVlRFVZTCtNYXZCUUxVd3BTTFl
+ YNVdEVTBhRFVnbGtSbk1VVnp5eDVpTzNESUtkSlB1bi9sZGFPNzBKNGgwcElUMHFHd2h2emJrSUt4
+ STdVVTZKR0lHYjhTVHZhTjRSYVRmYVNBWkhjZzF1UThJNGh6YmlHYXNzUnRqeEZSOFRlcks0ZUgwZ
+ VQyY2dUN0tCeXpJVCtVNnJHMHMzQkNBQ0RKWG0wWjMwbWlRZlVHOGpOSnBSWWdsamc1Q1BJ
+
+
+# Create backup users group with above user as member
+dn: cn=backup_users,ou=groups,dc=lab,dc=example,dc=com
+changetype: add
+objectClass: top
+objectClass: groupOfNames
+objectClass: nsMemberOf
+cn: backup_users
+member: uid=student,ou=People,dc=lab,dc=example,dc=com
+
+# Add both ACIs
+dn: cn=config
+changetype: modify
+add: aci
+aci: (target = "ldap:///cn=backup,cn=tasks,cn=config")(targetattr="*")
+  (version 3.0 ; acl "permission: Allow the backup_users group to create 
+  backup tasks" ; allow (add, read, search) 
+  groupdn = "ldap:///cn=backup_users,ou=groups,dc=lab,dc=example,dc=com";)
+-
+add: aci
+aci: (target = "ldap:///cn=config")(targetattr = "nsslapd-bakdir ||
+  objectClass") (version 3.0 ; acl "permission: Allow the backup_users 
+  group to access bakdir attribute" ; allow (read,search) 
+  groupdn = "ldap:///cn=backup_users,ou=groups,dc=lab,dc=example,dc=com";)
+
+
