@@ -21,7 +21,7 @@
        import_tasks: Tasks/manage_entries.yml
        vars:
          add_entries_ldifs:
-            - rh423_solutions/Projects.ldif
+            - Projects.ldif
          modify_ldifs:
             - add_access_groups.ldif
 
@@ -47,13 +47,13 @@
          import_tasks: Tasks/manage_entries.yml
          vars:
            add_entries_ldifs:
-              - rh423_solutions/RHDS_Documents.ldif
+              - RHDS_Documents.ldif
 
 
      - name: configure roles
        import_tasks: Tasks/manage_entries.yml
        vars:
          modify_ldifs:
-            - rh423_solutions/setup-role.ldif
+            - setup-role.ldif
 
 
