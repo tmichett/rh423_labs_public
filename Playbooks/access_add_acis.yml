@@ -1,0 +1,13 @@
+---
+# Optional variables in Tasks/managed_entries: 
+# modify_ldifs delete_dns add_entries_ldifs 
+
+- name: Solves create-aci GE
+  hosts: rhds
+  tasks:
+     - name: Add ACIs to ou=Douments tree
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         modify_ldifs:
+            - add_access_aci.ldif
+

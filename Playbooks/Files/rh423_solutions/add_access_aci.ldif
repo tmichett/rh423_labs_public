@@ -1,0 +1,22 @@
+# remove all aci from ou=Documents
+dn: ou=Documents,dc=lab,dc=example,dc=com
+changetype: modify
+delete: aci
+
+# Allow anonymous binds to browse entries in ou=Documents
+
+dn: ou=Documents,dc=lab,dc=example,dc=com
+changetype: modify
+add: aci
+aci: (targetattr="objectclass || cn || description || documentTitle || documentVersion || documentAuthor || documentLocation || documentPublisher")(targetfilter="(objectClass=document)")(version 3.0; acl "Enable anyone user read"; allow (read, search, compare)(userdn="ldap:///anyone");)
+
+# Allow authors to modify entries
+
+dn: ou=Documents,dc=lab,dc=example,dc=com
+changetype: modify
+add: aci
+aci: (targetfilter=(objectclass=document))(targetattr !=
+  "documentIdentifier || cn")(version 3.0;acl 
+  "RHDSAuthors role allow to manage document entries"; allow (all) 
+  roledn="ldap:///cn=RHDSAuthors,ou=people,dc=lab,dc=example,dc=com";)
+
