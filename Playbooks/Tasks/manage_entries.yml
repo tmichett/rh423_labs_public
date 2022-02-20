@@ -10,6 +10,7 @@
   command: ldapmodify -c -x -D "cn=Directory Manager" -w RedHat123 -f /tmp/{{ item }}
   loop: "{{ modify_ldifs }}"
   when: modify_ldifs is defined
+  ignore_errors: true
 
 - name: delete recursively portions of the tree
   command: ldapdelete -c -x -D "cn=Directory Manager" -w RedHat123 -r {{ item }}
@@ -28,6 +29,7 @@
   command: ldapadd -c -x -D "cn=Directory Manager" -w RedHat123 -f /tmp/{{ item }}
   loop: "{{ add_entries_ldifs }}"
   when: add_entries_ldifs is defined
+  ignore_errors: true
 
 
 
