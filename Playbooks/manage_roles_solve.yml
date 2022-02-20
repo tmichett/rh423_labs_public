@@ -15,7 +15,7 @@
          command: dsconf {{ instance_name }} plugin memberof enable
 
        - name: restart the instance
-         command: dsctl {{ intance_name }} restart
+         command: dsctl {{ instance_name }} restart
 
      - name: Add entries
        import_tasks: Tasks/manage_entries.yml
@@ -34,14 +34,14 @@
 
        - name: Add automember definition
          command: >
-             dsconf {{ intance_name }} plugin automember definition docs add 
+             dsconf {{ instance_name }} plugin automember definition docs add 
              --default-group "cn=documents,ou=groups,dc=lab,dc=example,dc=com" 
              --scope "ou=Documents,dc=lab,dc=example,dc=com"
              --filter "objectclass=document" 
              --grouping-attr "member:dn"
 
        - name: restart the instance
-         command: dsctl {{ intance_name }} restart
+         command: dsctl {{ instance_name }} restart
 
        - name: Add Documents 
          import_tasks: Tasks/manage_entries.yml
