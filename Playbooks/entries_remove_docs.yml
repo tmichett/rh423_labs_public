@@ -1,4 +1,7 @@
 ---
+# Optional variables in Tasks/managed_entries: 
+# modify_ldifs delete_dns add_entries_ldifs 
+
 - name: Cleanup after Entries LAB in rhds-ldap-manage-entries finish
   hosts: rhds
   tasks:
@@ -9,5 +12,4 @@
             - delete_docs.ldif
          delete_dns:
             - ou=Documents,dc=lab,dc=example,dc=com
-       ignore_errors: true
 

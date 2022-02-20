@@ -1,0 +1,28 @@
+---
+# Optional variables in Tasks/managed_entries: 
+# modify_ldifs delete_dns add_entries_ldifs 
+
+- name: Remove groups from rhds-manage-roles
+  hosts: rhds
+  vars:
+     instance_name: rh423
+  tasks:
+     - name: disbable MemberOf plugin
+       command: dsconf {{ instance_name }} plugin memberof disable
+       notify: restart instance
+       ignore_errors: true
+
+     - name: remove entries
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         modify_ldifs:
+            - delete_access_groups.ldif
+         delete_dns:
+            - ou=Projects,dc=lab,dc=example,dc=com
+            - ou=Documents,dc=lab,dc=example,dc=com
+
+  handlers:
+     - name: restart instance
+       command: dsctl {{ instance_name }} restart
+
+
