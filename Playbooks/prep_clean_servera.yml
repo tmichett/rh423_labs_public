@@ -1,0 +1,48 @@
+---
+- name: reset servera to original state
+  # no RH423CA cert, no ldapsearch, no sssd configuration
+  hosts: servera.lab.example.com
+  tasks:
+    - name: remove ca certs from CA Trust sources
+      file:
+         path: "{{ item }}"
+         state: absent
+      loop: 
+         - /etc/pki/ca-trust/source/anchors/rh423-ca.crt
+         - /etc/pki/ca-trust/source/anchors/ds-ca.crt
+
+    - name: update CA Trust database
+      command: update-ca-trust
+
+    - name: disable and stop oddjob
+      service: 
+        name: oddjobd
+        enabled: no
+        state: stopped
+        
+    - name: appstream/packages are removed     
+      dnf:
+        name: 
+          - openldap-clients
+          - oddjob-mkhomedir
+          - sssd-ldap
+        state: absent
+
+    - name: restore original ldap.conf
+      # would be nice to get copy from system but for now, this copy works
+      copy:
+        src: Files/orig-ldap.conf
+        dest: /etc/openldap/ldap.cong
+
+    - name: remove residual sssd config file
+      file:
+         path: /etc/sssd/sssd.conf
+         state: absent
+      notify: restart sssd     
+
+  handlers:
+    - name: restart sssd       
+      service:
+         name: sssd
+         state: restarted
+
