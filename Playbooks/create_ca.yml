@@ -12,4 +12,16 @@
         cmd: Files/create_ca.sh
         creates: /home/student/cacerts
 
+    - name: nss-database owned by student
+      file:
+        path: /home/student/cacerts
+        owner: student
+        group: student
+        recurse: true
 
+    - name: nss-database pin owned by student
+      file:
+        path: /home/student/ca_nss_passwd
+        owner: student
+        group: student
+        recurse: true

@@ -1,5 +1,5 @@
 # uses variables:  cert_nick instance_name
-# calls handler restart_slapd
+# calls handler restart_instance
 #
 
         - name: copy CSR to worktation
@@ -10,7 +10,7 @@
 
         - name: have CA sign the CA
           shell: "certutil -C -m 2356 -v 12 -i /tmp/{{ cert_nick }}.csr -o /tmp/{{ cert_nick }}.crt -a -c rh423CA -d /home/student/cacerts/ -f /home/student/ca_nss_passwd && chown student /tmp/{{ cert_nick }}.crt"
-          delegate_to: workstation.lab.example.com    
+          delegate_to: workstation
 
         - name: Copy new crt to host
           copy:

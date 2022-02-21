@@ -1,7 +1,7 @@
 ---
 - name: reset servera to original state
   # no RH423CA cert, no ldapsearch, no sssd configuration
-  hosts: servera.lab.example.com
+  hosts: servera
   tasks:
     - name: remove ca certs from CA Trust sources
       file:
