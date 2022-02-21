@@ -1,0 +1,9 @@
+
+- name: copy CA cert to host
+  copy:
+     src: /tmp/rh423-ca.crt
+     dest: /etc/pki/ca-trust/source/anchors/
+
+- name: update ca trust 
+  command: update-ca-trust
+

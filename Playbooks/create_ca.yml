@@ -1,0 +1,15 @@
+---
+- name: create certificate authority
+  hosts: workstation
+  tasks:
+    - name: install nss-tools
+      dnf:
+         name: 'nss-tools'
+         state: present
+
+    - name: setup CA certificate authority
+      script: 
+        cmd: Files/create_ca.sh
+        creates: /home/student/cacerts
+
+

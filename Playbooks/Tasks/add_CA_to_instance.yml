@@ -29,14 +29,3 @@
      - name: set the trust options for the ca cert
        command: dsconf {{ instance_name }} security ca-certificate set-trust-flags --flags "CT,," RH423CA
 
-  - name: configure CA Trust Database
-    block:
-
-     - name: copy CA cert to host
-       copy:
-          src: /tmp/rh423-ca.crt
-          dest: /etc/pki/ca-trust/source/anchors/
-
-     - name: update ca trust 
-       command: update-ca-trust
-
