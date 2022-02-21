@@ -24,4 +24,3 @@
         path: /home/student/ca_nss_passwd
         owner: student
         group: student
-        recurse: true

@@ -68,8 +68,8 @@
             cert_nick: replica1-cert
 
     - name: enable TLS
-      command: dsconf slapd-replica1 config replace nsslapd-security=on
-      notify: restart_slapd
+      command: dsconf replica1 config replace nsslapd-security=on
+      notify: restart_instance
 
 
   handlers:
