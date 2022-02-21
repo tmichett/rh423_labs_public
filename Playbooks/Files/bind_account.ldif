@@ -1,0 +1,49 @@
+# for use with ldapmodify
+dn: cn=Client BindDN,dc=lab,dc=example,dc=com
+changetype: add
+objectClass: person
+objectClass: top
+cn: Client BindDN
+sn: bindDN
+userPassword:: e1BCS0RGMl9TSEEyNTZ9QUFBSUFDWVRDWFk4ZzhWUGxpckN2MkExTEhuemRzN1p
+ CRFVhYnJIQ0syV1J3VWsxeUhXSE1KL0ZnbEc0Q0VhdDhpRCtQV3o4YW5DNWE5QlRpbHJISHlRM1Jx
+ cjkxREUwaTJzTGZmL2VkY3dhdzFLbEdOTTRzN0tLS2kydUR1MzJ3V1JxenJVRUlnUTZGZERram1oa
+ Xk5UGhrMEZ5WVNsYXhPTGNBYnQweHFBR3dCV0k4RzdIUmhFcHg2TVFNeFdNc29lTGo3UkkwQXIyVk
+ NaRVE1S1VrTG5yajJlem9URnM2bFp3SzFMKzZ5bVNyNENGQmtKekFVcjdIVlM2RjJzRmlVOWI4M3Z
+ ocmxJS2VYSnR0cmdyaVRzcHd1cVVnOEpEcjd3c0tOcWhiRG9wdVhFUU40ekF2NUZTZ0ZtL0E1NU9j
+ SXlKemVlRU1seWJHWnRwZ3hPNTg1QWlkV2wrSVNSQmhSbTlzMTdKYWNCN29adTB2VkllTFh1VkN3L
+ 0NORUxGZ1FYa2M3MVJub3V4VE50enFnRzk5RStCWkpNRTBNOHc5ZDd2K1NPY20rajVuZ01U
+
+dn: uid=slayer,ou=people,dc=lab,dc=example,dc=com
+changetype: modify
+add: userPassword
+userPassword:: e1BCS0RGMl9TSEEyNTZ9QUFBSUFQSVNCeWs2eE43aEo3WER5ZlVJQ1I2aVJBZmF
+ JdzZJU2ltWkVBWjMzMlJhVW9oVnV6ejhjTVNuWGIvbCtZcStaazZiUkUrSDUvWmdBcHpCQzhxNE04
+ V0I4eVFrMVpGdk1yaEFPcnRxM3A5WjRGem1mN2I5RHRDM3JtR1Z1RlArcjZ5QVRtOFJPdWduQjhEZ
+ kg4dmpVQkNuaFgzbEduL2JLM2J6ZWVZMGpLVW5wUVZrQ2U1S1gzU29UZUJxVnBaaUQzYythWnRKZ2
+ 9tVVZQNG85OXUxM1JKQTB0dGhrOXh6WWJuSzNJMTRFUG5odENRVHR0ckFnemlNVGoxbHJ2M0o2dHF
+ 2TWVaeGw5dWQwYzFISkE3cUhsM3F5NHFjTFBLSFF1K0ZBcCtxbmhiQnV0OXlNZEJ3SkFLZTlyamI0
+ UmlRcDVjUGVkU2VweDA2NStNZ3lxaGN0WjRhZ1VZS1hzc0ZPMmpSelJYRzROcjRJWVV6ZFdNZzhGV
+ kpHU0E0dEhiVG1MRjNoazQzUHY4NEhVU1QzOURzWkZ2RzhwSzRRT3psV3N1dDBLUE9WMmZU
+
+dn: uid=dscully,ou=people,dc=lab,dc=example,dc=com
+changetype: modify
+add: userPassword
+userPassword:: e1BCS0RGMl9TSEEyNTZ9QUFBSUFIWXpnQ3FHTG9QWUZyOG5IYjhXN3VjUXJpaXF
+ zZTBTUWJOME9jY0dHTmx5bEljZG5sZDkzRUJWMmJvWFU0T2JDWkhjaTdKdFYvTnRteWc2emFTUVlu
+ eEF2SXBkTnZpTVJFNW5TZ05iT29oQms2NHR4UEo2MllZSTNRMDU1UTVrUXluejc3UzUrM3dKeWx2V
+ 3ZDd2dycjRlN1kyVWE1VUJZVzdWY2ZvR3hsb1JQUWxCem9hM0JqUUYxWVZkZU9BdTU4RDhHOHBVQ3
+ g2MjRKNWJNOUlCZVBDa0tkTWJpVXhnU0RzQjRHNkwxUHpPU2p2cjhvNU9XTFQ3bi9MTDVLN1NpZ25
+ IYnZKUGFMeWJ4cXlmVFZFRkRONlpYb2xLRXJ3TE9zQzNjUjRhUnFTZzUvMVdFZHBPTzcxM2VSQmY0
+ U3hsSUpZMVlhSlNJNDk2NjgrcjhvRE9mZW1pZDJTT00rcXdnK1RwQWFvRzhUU3U5cUVQS3FoV0JRT
+ mJpck5keEpXUXBOL1FSVzQvV0pnaGNIajJMaE1FU2ZjQVJrZnRyZE1na3ZPOXNBVm5PWGhN
+
+dn: ou=groups,dc=lab,dc=example,dc=com
+changetype: modify
+add: aci
+aci: (targetattr="cn || member || gidNumber || nsUniqueId || description ||
+  objectclass")(targetfilter="(objectClass=posixGroup)")(version 3.0;
+  acl "Enable Client BinDN access"; allow (read, search,
+  compare)(userdn="ldap:///cn=Client BindDN,dc=lab,dc=example,dc=com");)
+
+

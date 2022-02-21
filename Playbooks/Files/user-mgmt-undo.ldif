@@ -1,0 +1,37 @@
+dn: cn=Client BindDN,dc=lab,dc=example,dc=com
+changetype: delete
+
+dn: ou=groups,dc=lab,dc=example,dc=com
+changetype: modify
+delete: aci
+aci: (targetattr="cn || member || gidNumber || nsUniqueId || description ||
+  objectclass")(targetfilter="(objectClass=posixGroup)")(version 3.0;
+  acl "Enable Client BinDN access"; allow (read, search,
+  compare)(userdn="ldap:///cn=Client BindDN,dc=lab,dc=example,dc=com");)
+
+dn: cn=dscully,ou=groups,dc=lab,dc=example,dc=com
+changetype: delete
+
+dn: cn=slayer,ou=groups,dc=lab,dc=example,dc=com
+changetype: delete
+
+dn: uid=slayer,ou=people,dc=lab,dc=example,dc=com
+changetype: delete
+
+dn: uid=dscully,ou=people,dc=lab,dc=example,dc=com
+changetype: delete
+
+dn: cn=cn\3Dposix_instance,cn=Managed Entries,cn=plugins,cn=config
+changetype: delete
+
+dn: cn=Posix User Template,ou=people,dc=lab,dc=example,dc=com
+changetype: delete
+
+dn: cn=Account UIDs,cn=Distributed Numeric Assignment Plugin,cn=plugins,cn=config
+changetype: delete
+
+dn: cn=Account GIDs,cn=Distributed Numeric Assignment Plugin,cn=plugins,cn=config
+changetype: delete
+
+# dn: ou=Ranges,dc=lab,dc=example,dc=com  is a branch, use ldapdelete -r
+

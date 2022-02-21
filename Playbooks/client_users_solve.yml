@@ -5,10 +5,18 @@
     instance_name: rh423
   tasks:
 
+     - name: Delete any entries from previous work done 
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         modify_ldifs:
+            - user-mgmt-undo.ldif
+         delete_dns:
+            - ou=Ranges,dc=lab,dc=example,dc=com
+
      - name: enable dna plugin
        command: dsconf {{ instance_name }} plugin dna enable
 
-     - name: Add entries
+     - name: Add plugin configuration entries
        import_tasks: Tasks/manage_entries.yml
        vars:
          modify_ldifs:
@@ -28,9 +36,12 @@
      - name: restart instance
        command: dsctl {{ instance_name }} restart
 
-     - name: Add entries
+     - name: Add user entries
        import_tasks: Tasks/manage_entries.yml
        vars:
          modify_ldifs:
             - posix_users.ldif
+            - bind_account.ldif
+
+
 
