@@ -33,35 +33,13 @@
         - name: generate a CSR
           command: dsctl rh423 tls generate-server-cert-csr -s "CN=rhds.lab.example.com"
 
-          #   - name: sign and update certificate
-          #     import_tasks: Tasks/sign_replace_cert.yml
-          #     vars:
-          #       cert_nick: rhds-cert
+        - name: sign and update certificate
+          import_tasks: Tasks/sign_replace_cert.yml
+          vars:
+            cert_nick: rhds-cert
          
-        - name: copy CSR to worktation
-          fetch:
-            src: /etc/dirsrv/slapd-replica1/Server-Cert.csr
-            dest: /tmp/rhds-cert.csr
-            flat: true
-
-        - name: have CA sign the CA
-          command: certutil -C -m 2356 -v 12 -i /tmp/rhds-cert.csr -o /tmp/rhds-cert.crt -a -c rh423CA -d /home/student/cacerts/ -f /home/student/ca_nss_passwd
-          delegate_to: workstation.lab.example.com    
-
-        - name: Copy new crt to host
-          copy:
-            src: /tmp/rhds-cert.crt
-            dest: /tmp/rhds-cert.crt
-
-        - name: Install new server certificate
-          command: dsconf rh423 security certificate add --file /tmp/rhds-cert.crt --name "rhds-cert" --primary-cert
-          notify: restart_slapd
-
-        - name: Remove original Server-Cert
-          command: dsconf {{ instance_name }} security certificate del Server-Cert
-
   
   handlers:
      - name: restart_instance
-       command: dsctl {{ intance_name }} restart
+       command: dsctl {{ instance_name }} restart
 

@@ -4,12 +4,12 @@
 
         - name: copy CSR to worktation
           fetch:
-            src: /etc/dirsrv/slapd-replica1/Server-Cert.csr
+            src: /etc/dirsrv/slapd-{{ instance_name }}/Server-Cert.csr
             dest: "/tmp/{{cert_nick }}.csr"
             flat: true
 
         - name: have CA sign the CA
-          command: "certutil -C -m 2356 -v 12 -i /tmp/{{ cert_nick }}.csr -o /tmp/{{ cert_nick }}.crt -a -c rh423CA -d /home/student/cacerts/ -f /home/student/ca_nss_passwd"
+          shell: "certutil -C -m 2356 -v 12 -i /tmp/{{ cert_nick }}.csr -o /tmp/{{ cert_nick }}.crt -a -c rh423CA -d /home/student/cacerts/ -f /home/student/ca_nss_passwd && chown student /tmp/{{ cert_nick }}.crt"
           delegate_to: workstation.lab.example.com    
 
         - name: Copy new crt to host
@@ -19,7 +19,7 @@
 
         - name: Install new server certificate
           command: dsconf rh423 security certificate add --file /tmp/{{ cert_nick }}.crt --name "{{ cert_nick }}" --primary-cert
-          notify: restart_slapd
+          notify: restart_instance
 
         - name: Remove original Server-Cert
           command: dsconf {{ instance_name }} security certificate del Server-Cert
