@@ -1,0 +1,25 @@
+# Create an instance of the plugin for Account UIDs.
+dsconf rh423 plugin dna config "Account UIDs" add --type uidNumber --filter "(objectclass=PosixAccount)" --scope ou=people,dc=lab,dc=example,dc=com --next-value 3000 --max-value 3999 --shared-config-entry "cn=Account IDs,ou=Ranges,dc=lab,dc=example,dc=com" --threshold 100 --range-request-timeout 60 --magic-regen 0
+
+# View the instance of the plugin for Account UIDs.
+ldapsearch -x -D "cn=Directory Manager" -w RedHat123 -b cn=config 'cn=Account UIDs'
+
+# Create an instance of the plugin for Account GIDs.
+dsconf rh423 plugin dna config "Account GIDs" add --type gidNumber --filter "(objectclass=PosixAccount)" --scope ou=people,dc=lab,dc=example,dc=com --next-value 3000 --max-value 3999 --shared-config-entry "cn=Account IDs,ou=Ranges,dc=lab,dc=example,dc=com" --threshold 100 --range-request-timeout 60 --magic-regen 0
+
+
+# View the instance of the plugin for Account GIDs.
+ldapsearch -x -D "cn=Directory Manager" -w RedHat123 -b cn=config 'cn=Account GIDs'
+
+# Create managed-entries template entry
+dsconf rh423 plugin managed-entries template "cn=Posix User Template,ou=people,dc=lab,dc=example,dc=com" add --rdn-attr "cn" --static-attr "objectclass: posixGroup" --mapped-attr 'cn: $cn Group' 'gidNumber: $gidNumber' 'memberUID: $uid'
+
+# View template entry
+ldapsearch -x -D "cn=Directory Manager" -w RedHat123 'cn=Posix User Template'
+
+# Create managed-entries definition entry
+dsconf rh423 plugin managed-entries config "cn=instance,cn=Managed Entries,cn=plugins,cn=config" add --scope="ou=people,dc=lab,dc=example,dc=com" --filter="objectclass=posixAccount" --managed-base="ou=groups,dc=lab,dc=example,dc=com" --managed-template="cn=Posix User Template,ou=people,dc=lab,dc=example,dc=com"
+
+# view definition entry
+ldapsearch -x -D "cn=Directory Manager" -w RedHat123 -b cn=config '(cn=cn\3Dinstance*)'
+

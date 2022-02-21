@@ -32,7 +32,7 @@
       # would be nice to get copy from system but for now, this copy works
       copy:
         src: Files/orig-ldap.conf
-        dest: /etc/openldap/ldap.cong
+        dest: /etc/openldap/ldap.conf
 
     - name: remove residual sssd config file
       file:
