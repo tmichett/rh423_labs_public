@@ -1,0 +1,32 @@
+# for use with ldapmodify
+dn: uid=slayer,ou=people,dc=lab,dc=example,dc=com
+changetype: add
+objectClass: top
+objectClass: nsPerson
+objectClass: nsAccount
+objectClass: nsOrgPerson
+objectClass: posixAccount
+objectClass: mepOriginEntry
+uid: slayer
+cn: Buffy Summers
+displayName: Buffy Summers
+homeDirectory: /home/slayer
+gidNumber: 0
+uidNumber: 0
+
+dn: uid=dscully,ou=people,dc=lab,dc=example,dc=com
+changetype: add
+objectClass: top
+objectClass: nsPerson
+objectClass: nsAccount
+objectClass: nsOrgPerson
+objectClass: posixAccount
+objectClass: mepOriginEntry
+uid: dscully
+cn: Dr. Dana Scully
+displayName: Dr. Dana Scully
+homeDirectory: /home/dscully
+gidNumber: 0
+uidNumber: 0
+
+

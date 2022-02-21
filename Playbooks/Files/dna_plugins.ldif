@@ -1,0 +1,31 @@
+# for use with ldapmodify
+dn: cn=Account UIDs,cn=Distributed Numeric Assignment Plugin,cn=plugins,cn=config
+changetype: add
+objectClass: top
+objectClass: dnaPluginConfig
+cn: Account UIDs
+dnaType: uidNumber
+dnaNextValue: 3002
+dnaMaxValue: 3999
+dnaMagicRegen: 0
+dnaFilter: (objectclass=PosixAccount)
+dnaScope: ou=people,dc=lab,dc=example,dc=com
+dnaSharedCfgDN: cn=Account IDs,ou=Ranges,dc=lab,dc=example,dc=com
+dnaThreshold: 100
+dnaRangeRequestTimeout: 60
+
+dn: cn=Account GIDs,cn=Distributed Numeric Assignment Plugin,cn=plugins,cn=config
+changetype: add
+objectClass: top
+objectClass: dnaPluginConfig
+cn: Account GIDs
+dnaType: gidNumber
+dnaNextValue: 3002
+dnaMaxValue: 3999
+dnaMagicRegen: 0
+dnaFilter: (objectclass=PosixAccount)
+dnaScope: ou=people,dc=lab,dc=example,dc=com
+dnaSharedCfgDN: cn=Account IDs,ou=Ranges,dc=lab,dc=example,dc=com
+dnaThreshold: 100
+dnaRangeRequestTimeout: 60
+

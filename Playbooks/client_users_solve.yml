@@ -1,0 +1,36 @@
+---
+- name: Tasks to solve rhds-user-mgmt GE
+  hosts: rhds
+  vars:
+    instance_name: rh423
+  tasks:
+
+     - name: enable dna plugin
+       command: dsconf {{ instance_name }} plugin dna enable
+
+     - name: Add entries
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         modify_ldifs:
+            - ranges.ldif
+            - dna_plugins.ldif
+            - managed_template.ldif
+
+     - name: configure manged entries plugin
+       command: >
+         dsconf rh423 plugin managed-entries config 
+         "cn=posix_instance" add 
+         --scope="ou=people,dc=lab,dc=example,dc=com" 
+         --filter="objectclass=posixAccount" 
+         --managed-base="ou=groups,dc=lab,dc=example,dc=com" 
+         --managed-template="cn=Posix User Template,ou=people,dc=lab,dc=example,dc=com"
+
+     - name: restart instance
+       command: dsctl {{ instance_name }} restart
+
+     - name: Add entries
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         modify_ldifs:
+            - posix_users.ldif
+

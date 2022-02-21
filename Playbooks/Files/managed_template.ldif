@@ -1,0 +1,12 @@
+# for use with ldapmodify
+dn: cn=Posix User Template,ou=people,dc=lab,dc=example,dc=com
+changetype: add
+objectClass: top
+objectClass: mepTemplateEntry
+cn: Posix User Template
+mepRDNAttr: cn
+mepStaticAttr: objectclass: posixGroup
+mepMappedAttr: cn: $cn Group
+mepMappedAttr: gidNumber: $gidNumber
+mepMappedAttr: memberUID: $uid
+
