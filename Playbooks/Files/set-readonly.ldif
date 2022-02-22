@@ -1,0 +1,5 @@
+dn: cn=userRoot,cn=ldbm database,cn=plugins,cn=config
+changetype: modify
+replace: nsslapd-readonly
+nsslapd-readonly: on
+

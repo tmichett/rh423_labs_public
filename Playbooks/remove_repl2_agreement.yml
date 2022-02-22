@@ -1,0 +1,37 @@
+---
+- name: remove replica1-to-2-agreement
+  hosts: replica1
+  vars:
+    instance_name: replica1
+    agreement_name: replica1-to-2-agreement
+    consumer_host: replica2.lab.example.com
+
+  tasks:
+    # in reality should set DB to read only but we are about to delete it all anyway.
+
+    - name: delete agreement on supplier
+      # need to handle error when it does not exist
+      ignore_errors: true
+      command: >
+              dsconf {{ instance_name }} repl-agmt delete 
+               --suffix="dc=lab,dc=example,dc=com" {{ agreement_name }}
+
+    - name: disable on consumer or hub
+      # need to handle error when it does not exist
+      ignore_errors: true
+      command: >
+              dsconf -D "cn=Directory Manager" -w RedHat123 
+               ldap://{{ consumer_host }} replication disable 
+               --suffix="dc=lab,dc=example,dc=com" 
+
+               
+    - name: disable on supplier
+      # need to handle error when it does not exist
+      ignore_errors: true
+      command: >
+              dsconf {{ instance_name }} replication disable 
+               --suffix="dc=lab,dc=example,dc=com" 
+
+      # should also remove entries from replica2 but we are going to delete intance and create again in LAB so ...
+      #
+

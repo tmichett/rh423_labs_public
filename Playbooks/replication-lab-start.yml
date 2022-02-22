@@ -1,0 +1,11 @@
+---
+- name: remove replica1-to-2-agreement
+  import_playbook: remove_repl2_agreement.yml
+
+- name: Remove instance from replica2
+  import_playbook: replica2_remove.yml
+
+- name: Install replica2 with suffix and certifcates
+  import_playbook: replica2_secure_install.yml
+
+
