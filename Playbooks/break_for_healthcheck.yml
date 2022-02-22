@@ -1,0 +1,22 @@
+---
+- name: Change settings to cause health check errors
+  hosts: rhds
+  vars:
+      instance_name: rh423
+  tasks:
+      - name: Cause check error DSPERMLE0001
+        file:
+          path: /etc/resolv.conf
+          mode: '0400'
+
+      - name: Ensure that changelog max age is not set
+        block:
+          - name: copy LDIF file to host
+            copy:
+              src: Files/delete_changelogmaxage.ldif
+              dest: /tmp/delete_changelogmaxage.ldif
+
+          - name: delete entry
+            command: ldapmodify -D "cn=Directory Manager" -w RedHat123 -c -f /tmp/delete_changelogmaxage.ldif
+
+

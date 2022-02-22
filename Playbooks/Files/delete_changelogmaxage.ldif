@@ -1,0 +1,4 @@
+dn: cn=changelog5,cn=config
+changetype: modify
+delete: nsslapd-changelogmaxage
+

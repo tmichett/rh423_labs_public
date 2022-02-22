@@ -1,0 +1,16 @@
+---
+- name: remediate healthchecks (fix break changes) from rhds-health-check start script
+  hosts: rhds
+  vars:
+     instance_name: rh423
+  tasks:
+     - name: Ensure file mode
+       file:
+         path: /etc/resolv.conf
+         mode: '0644'
+
+     - name: set a changelog max age
+       command: dsconf {{ instance_name }} replication set-changelog --max-age 30d
+
+
+
