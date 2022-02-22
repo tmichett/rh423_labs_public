@@ -1,0 +1,42 @@
+---
+- name: replica1 as consumer setup
+  hosts: replica1
+  vars:
+    repl_role: consumer
+    instance_name: replica1
+
+  tasks:
+     - name: Enable and create the replication manager account
+       command: >
+                dsconf "{{ instance_name }}" replication enable 
+                 --suffix "dc=lab,dc=example,dc=com" --role "{{ repl_role }}" 
+                 --bind-dn "cn=replication manager,cn=config" 
+                 --bind-passwd "RedHat123"
+
+
+- name: rhds as supplier setup ID=1
+  hosts: rhds
+  vars:
+    repl_role: supplier
+    repl_id: "1"
+    instance_name: rh423
+    agreement_name: replica1-agreement
+    consumer_host: replica1.lab.example.com
+
+  tasks:
+     - name: Enable and create the replication manager account
+       command: >
+                dsconf {{ instance_name }} replication enable 
+                 --suffix "dc=lab,dc=example,dc=com" --role "{{ repl_role }}" 
+                 --replica-id "{{ repl_id }}" 
+
+     - name: Enable and create the replication manager account
+       command: >
+                dsconf "{{ instance_name }}" repl-agmt create 
+                 --suffix "dc=lab,dc=example,dc=com" 
+                 --host "{{ consumer_host }}" 
+                 --port=389 --conn-protocol=StartTLS 
+                 --bind-dn "cn=replication manager,cn=config" 
+                 --bind-passwd="RedHat123" 
+                 --bind-method=SIMPLE --init {{ agreement_name }}
+

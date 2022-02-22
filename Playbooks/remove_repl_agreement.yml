@@ -1,0 +1,25 @@
+---
+- name: remove replica1-agreement
+  hosts: rhds
+  vars:
+    instance_name: rh423
+    agreement_name: replica1-agreement
+    consumer_host: replica1.lab.example.com
+
+  tasks:
+    # in reality should set DB to read only but we are not doing anything
+
+    - name: delete agreement on supplier
+      command: >
+              dsconf {{ instance_name }} repl-agmt delete 
+               --suffix="dc=lab,dc=example,dc=com" {{ agreement_name }}
+
+    - name: disable on consumer or hub
+      command: >
+              dsconf -D "cn=Directory Manager" -w RedHat123 
+               ldap://{{ consumer_host }} replication disable 
+               --suffix="dc=lab,dc=example,dc=com" 
+
+               
+
+
