@@ -4,21 +4,38 @@
   vars:
      inf_file: dscreate_replica2.inf
      instance_name: replica2
+     cert_nick: replica2-cert
   tasks:
-    - name: install packages      
+
+    - name: ensure packages are installed
       import_tasks: Tasks/install_packages.yml
 
-    - name: firewall ports are open
+    - name: ensure firewall ports are open
       import_tasks: Tasks/open_firewall.yml
 
-    - name: copy inf file to server    
-      copy: 
-        src: "Files/{{ inf_file }}"
-        dest: "/root/{{ inf_file }}"
+    - name: Ensure instance is configured
+      block:
 
-    - name: use dscreate with file
-      command: "dscreate from-file /root/{{ inf_file }}"
-        # consider fail_when and changed_when
+        - name: check status of instance
+          command: dsctl {{ instance_name }} status
+          register: instance_status
+
+        - name: fail if not found
+          assert: 
+            that: instance_status.stdout.find('is running') != -1
+            success_msg: server instance appears to be running
+            fail_msg: instance does not appear to be running, configuring now
+      rescue:
+
+
+        - name: copy inf file to server
+          copy:
+            src: "Files/{{ inf_file }}"
+            dest: "/root/{{ inf_file }}"
+
+        - name: use dscreate with file
+          command: "dscreate from-file /root/{{ inf_file }}"
+
 
     - name: configure CA certificate
       import_tasks: Tasks/add_CA_to_instance.yml
