@@ -53,5 +53,5 @@
                  --bind-dn "cn=replication manager,cn=config" 
                  --bind-passwd="RedHat123" 
                  --bind-method=SIMPLE --init {{ agreement_name }}
-       when: repl_monitor.stdout.find('No replicas were found') != -1
+       ignore_errors: true
 
