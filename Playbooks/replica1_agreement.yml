@@ -1,4 +1,8 @@
 ---
+# can do this all in one play
+# see remove_repl_agreement.yml for running dsconf remote (watch repl_role var)
+# Also put check and tasks into block/rescue like replace_rhds_cert.yml
+ 
 - name: replica1 as consumer setup
   hosts: replica1
   vars:
@@ -6,12 +10,17 @@
     instance_name: replica1
 
   tasks:
+     - name: Check for existing agreements
+       command: dsconf {{ instance_name }} replication monitor
+       register: repl_monitor
+
      - name: Enable and create the replication manager account
        command: >
                 dsconf "{{ instance_name }}" replication enable 
                  --suffix "dc=lab,dc=example,dc=com" --role "{{ repl_role }}" 
                  --bind-dn "cn=replication manager,cn=config" 
                  --bind-passwd "RedHat123"
+       when: repl_monitor.stdout.find('No replicas were found') != -1
 
 
 - name: rhds as supplier setup ID=1
@@ -24,11 +33,16 @@
     consumer_host: replica1.lab.example.com
 
   tasks:
+     - name: Check for existing agreements
+       command: dsconf {{ instance_name }} replication monitor
+       register: repl_monitor
+
      - name: Enable and create the replication manager account
        command: >
                 dsconf {{ instance_name }} replication enable 
                  --suffix "dc=lab,dc=example,dc=com" --role "{{ repl_role }}" 
                  --replica-id "{{ repl_id }}" 
+       when: repl_monitor.stdout.find('No replicas were found') != -1
 
      - name: Enable and create the replication manager account
        command: >
@@ -39,4 +53,5 @@
                  --bind-dn "cn=replication manager,cn=config" 
                  --bind-passwd="RedHat123" 
                  --bind-method=SIMPLE --init {{ agreement_name }}
+       when: repl_monitor.stdout.find('No replicas were found') != -1
 

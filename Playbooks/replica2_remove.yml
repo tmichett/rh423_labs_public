@@ -1,0 +1,20 @@
+---
+- name: remove replica2 instance (for rhds-deploy-ms-replication start )
+  hosts: replica2
+  vars:
+     instance_name: slapd-replica2
+  tasks:
+    # consider options to determine any existing instance_name from system
+
+    - name: stop and remove the instance
+      block:
+        - name: stop the instance
+          command: 'dsctl {{ instance_name }} stop'
+          ignore_errors: true
+
+        - name: remove the instance
+          command: 'dsctl {{ instance_name }} remove --do-it'
+          ignore_errors: true
+      
+      
+    # no need to force remove all the other stuff since it is all setup with playbook anyway. will save time for both remove and install playbooks when redoing a lab.

@@ -32,16 +32,7 @@
               dsconf {{ instance_name }} replication disable 
                --suffix="dc=lab,dc=example,dc=com" 
 
-    - name: remove entries from replica1
-      command: >
-              dsconf -D "cn=Directory Manager" -w RedHat123 
-               ldap://{{ consumer_host }} backend delete userroot
-
-    - name: recreate suffix
-      command: >
-              dsconf -D "cn=Directory Manager" -w RedHat123 
-               ldap://{{ consumer_host }} backend create 
-               --suffix "dc=lab,dc=example,dc=com" --be-name=userroot
+      # should also remove entries from replica1
 
 
 
