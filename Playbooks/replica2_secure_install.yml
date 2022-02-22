@@ -1,0 +1,34 @@
+---
+- name: Configure replica2 for replication unit
+  hosts: replica2
+  vars:
+     inf_file: dscreate_replica2.inf
+     instance_name: replica2
+  tasks:
+    - name: install packages      
+      import_tasks: Tasks/install_packages.yml
+
+    - name: firewall ports are open
+      import_tasks: Tasks/open_firewall.yml
+
+    - name: copy inf file to server    
+      copy: 
+        src: "Files/{{ inf_file }}"
+        dest: "/root/{{ inf_file }}"
+
+    - name: use dscreate with file
+      command: "dscreate from-file /root/{{ inf_file }}"
+        # consider fail_when and changed_when
+
+    - name: configure CA certificate
+      import_tasks: Tasks/add_CA_to_instance.yml
+
+    - name: configure CA Trust Store
+      import_tasks: Tasks/update_ca_trust.yml
+
+    - name: configure CA certificate
+      import_tasks: Tasks/sign_replace_cert.yml
+
+  handlers:
+    - name: restart_instance
+      command: dsctl {{ instance_name }} restart
