@@ -10,16 +10,40 @@
     # in reality should set DB to read only but we are not doing anything
 
     - name: delete agreement on supplier
+      # need to handle error when it does not exist
+      ignore_errors: true
       command: >
               dsconf {{ instance_name }} repl-agmt delete 
                --suffix="dc=lab,dc=example,dc=com" {{ agreement_name }}
 
     - name: disable on consumer or hub
+      # need to handle error when it does not exist
+      ignore_errors: true
       command: >
               dsconf -D "cn=Directory Manager" -w RedHat123 
                ldap://{{ consumer_host }} replication disable 
                --suffix="dc=lab,dc=example,dc=com" 
 
                
+    - name: disable on supplier
+      # need to handle error when it does not exist
+      ignore_errors: true
+      command: >
+              dsconf {{ instance_name }} replication disable 
+               --suffix="dc=lab,dc=example,dc=com" 
+
+    - name: remove entries from replica1
+      command: >
+              dsconf -D "cn=Directory Manager" -w RedHat123 
+               ldap://{{ consumer_host }} backend delete userroot
+
+    - name: recreate suffix
+      command: >
+              dsconf -D "cn=Directory Manager" -w RedHat123 
+               ldap://{{ consumer_host }} backend create 
+               --suffix "dc=lab,dc=example,dc=com" --be-name=userroot
+
+
+
 
 
