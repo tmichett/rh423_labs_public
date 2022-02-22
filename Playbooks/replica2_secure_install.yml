@@ -43,8 +43,28 @@
     - name: configure CA Trust Store
       import_tasks: Tasks/update_ca_trust.yml
 
-    - name: configure CA certificate
-      import_tasks: Tasks/sign_replace_cert.yml
+    - name: Replace server cert
+      block:
+
+        - name: look for existing server cert
+          command: dsconf {{ instance_name }} security certificate list 
+          register: server_cert_list
+
+        - name: fail if not found
+          assert: 
+            that: server_cert_list.stdout.find('replica2-cert') != -1
+            success_msg: server cert appears to exist, no need to replace.
+            fail_msg: server cert does not exist, continue to creating CSR
+
+      rescue:
+
+        - name: generate a CSR
+          command: dsctl replica2 tls generate-server-cert-csr -s "CN=replica2.lab.example.com"
+
+        - name: sign and update certificate
+          import_tasks: Tasks/sign_replace_cert.yml
+          vars:
+            cert_nick: replica2-cert
 
   handlers:
     - name: restart_instance

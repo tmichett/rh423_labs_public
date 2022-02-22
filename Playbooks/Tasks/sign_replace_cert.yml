@@ -18,7 +18,7 @@
             dest: /tmp/{{ cert_nick }}.crt
 
         - name: Install new server certificate
-          command: dsconf rh423 security certificate add --file /tmp/{{ cert_nick }}.crt --name "{{ cert_nick }}" --primary-cert
+          command: dsconf {{ instance_name }} security certificate add --file /tmp/{{ cert_nick }}.crt --name "{{ cert_nick }}" --primary-cert
           notify: restart_instance
 
         - name: Remove original Server-Cert
