@@ -1,0 +1,18 @@
+# dsidm commands used in GE rhds-manage-roles 
+
+dsidm rh423 -b ou=Projects,dc=lab,dc=example,dc=com group create --cn devops
+
+dsidm rh423 -b ou=Projects,dc=lab,dc=example,dc=com group add_member devops uid=abergin,ou=People,ou=Projects,dc=lab,dc=example,dc=com
+
+dsidm rh423 -b ou=Projects,dc=lab,dc=example,dc=com group add_member devops uid=jwalker,ou=People,ou=Projects,dc=lab,dc=example,dc=com
+
+dsconf rh423 plugin memberof fixup -f '(objectClass=inetOrgPerson)' "ou=Projects,dc=lab,dc=example,dc=com"
+
+dsidm rh423 -b ou=Projects,dc=lab,dc=example,dc=com group add_member devops uid=trigden,ou=People,ou=Projects,dc=lab,dc=example,dc=com
+
+dsidm rh423 -b dc=lab,dc=example,dc=com group create --cn documents
+
+dsconf rh423 plugin automember definition docs add --default-group "cn=documents,ou=groups,dc=lab,dc=example,dc=com" --scope "ou=Documents,dc=lab,dc=example,dc=com" --filter "objectclass=document" --grouping-attr "member:dn"
+
+
+

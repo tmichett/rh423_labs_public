@@ -1,5 +1,8 @@
     - name: appstream/packages are removed
       dnf:
-        name: '@redhat-ds:11'
+        name: 
+          - 389-ds-base-libs.x86_64 
+          - python3-lib389.noarch 
+          - '@redhat-ds:11'
         state: absent
 

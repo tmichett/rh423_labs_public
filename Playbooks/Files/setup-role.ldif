@@ -1,3 +1,6 @@
+# for use with: 
+# ldapmodify -x -D "cn=Directory Manager" -W -c -f setup_roles.ldf
+
 dn: cn=RHDSAuthors,ou=people,dc=lab,dc=example,dc=com
 changetype: add
 objectclass: top
