@@ -15,8 +15,9 @@ aci: (targetattr="objectclass || cn || description || documentTitle || documentV
 dn: ou=Documents,dc=lab,dc=example,dc=com
 changetype: modify
 add: aci
-aci: (targetfilter=(objectclass=document))(targetattr !=
-  "documentIdentifier || cn")(version 3.0;acl 
+aci: (targetfilter=(objectclass=document))(targetattr = "description ||
+  seeAlso || documentTitle || documentVersion || documentAuthor || 
+  documentLocation || documentPublisher")(version 3.0;acl 
   "RHDSAuthors role allow to manage document entries"; allow (all) 
   roledn="ldap:///cn=RHDSAuthors,ou=people,dc=lab,dc=example,dc=com";)
 
