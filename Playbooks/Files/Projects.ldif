@@ -41,7 +41,6 @@ dn: ou=People, ou=Projects,dc=lab,dc=example,dc=com
 objectclass: top
 objectclass: organizationalunit
 ou: People
-
 aci: (targetattr="objectClass || description || nsUniqueId || uid || displayNa
  me || loginShell || uidNumber || gidNumber || gecos || homeDirectory || cn ||
   memberOf || mail || nsSshPublicKey || nsAccountLock || userCertificate || l 
