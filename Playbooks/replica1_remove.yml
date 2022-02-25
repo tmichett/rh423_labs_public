@@ -16,5 +16,10 @@
           command: 'dsctl {{ instance_name }} remove --do-it'
           ignore_errors: true
       
-      
-    # no need to force remove all the other stuff since it is all setup with playbook anyway. will save time for both remove and install playbooks when redoing a lab.
+    - name: remove packages
+      import_tasks: Tasks/remove_packages.yml
+
+    - name: remove packages
+      import_tasks: Tasks/close_firewall.yml
+
+

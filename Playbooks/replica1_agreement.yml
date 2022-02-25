@@ -53,5 +53,5 @@
                  --bind-dn "cn=replication manager,cn=config" 
                  --bind-passwd="RedHat123" 
                  --bind-method=SIMPLE --init {{ agreement_name }}
-       ignore_errors: true
+       when: repl_monitor.stdout.find( agreement_name ) == -1
 
