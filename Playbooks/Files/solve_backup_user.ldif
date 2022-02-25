@@ -1,12 +1,12 @@
 # Add user with password
-dn: uid=student,ou=People,dc=lab,dc=example,dc=com
+dn: uid=ops_user,ou=People,dc=lab,dc=example,dc=com
 changetype: add
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person
 objectClass: top
-uid: student
-cn: Student User
+uid: ops_user
+cn: Operator User
 sn: User
 userPassword:: e1BCS0RGMl9TSEEyNTZ9QUFBSUFOTWdxQnJ3am9kZm5ZTHY3Nmk4SHNTcnltbXh
  ObWo4M3gwb211c051NHlQQ3NxVFI5NVNndG9pOEEwNmEwUTNpOVhBMkYxQTEySi9ydVRPSjYzYi9s
@@ -25,7 +25,7 @@ objectClass: top
 objectClass: groupOfNames
 objectClass: nsMemberOf
 cn: backup_users
-member: uid=student,ou=People,dc=lab,dc=example,dc=com
+member: uid=ops_user,ou=People,dc=lab,dc=example,dc=com
 
 # Add both ACIs
 dn: cn=config
