@@ -14,6 +14,9 @@
     - name: update CA Trust database
       command: update-ca-trust
 
+    - name: remove mkhomedir from PAM
+      command: authselect select sssd --force
+
     - name: disable and stop oddjob
       service: 
         name: oddjobd
@@ -39,6 +42,15 @@
          path: /etc/sssd/sssd.conf
          state: absent
       notify: restart sssd     
+
+    - name: remove any home directories
+      file:
+        path: "{{ item }}"
+        state: absent
+        recurse: true
+      loop:
+        - /home/dscully
+        - /home/slayer
 
   handlers:
     - name: restart sssd       
