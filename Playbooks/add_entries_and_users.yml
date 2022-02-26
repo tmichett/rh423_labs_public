@@ -1,0 +1,8 @@
+#For later chapters (monitoring and tuning) to use.
+
+- name: Add entries from managing groups and roles
+  import_playbook: manage_roles_solve.yml
+
+- name: Add user account entries with passwords
+  import_playbook: client_users_solve.yml
+
