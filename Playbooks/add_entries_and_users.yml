@@ -6,3 +6,23 @@
 - name: Add user account entries with passwords
   import_playbook: client_users_solve.yml
 
+- name: Perform several queries on the documents to populate statistics
+  hosts: servera
+  vars:
+      ldap_uri: ldap://rhds.lab.example.com
+  tasks:
+      - name: ensure openldap-clients on servera
+        dnf:
+           name: openldap-clients
+           state: present
+
+      - name: run ldapsearch commands
+        command: ldapsearch -x -H {{ ldap_uri }} {{ item }}
+        loop:
+           - 'documentTitle~=Red Hat Directory Installation'
+           - 'documentTitle~=Red Hat Directory Performance'
+           - 'documentTitle~=Red Hat Directory Deployment'
+           - 'documentAuthor~=dballard documentTitle'
+           - 'documentAuthor~=mmuehlfeld documentTitle'
+           - 'documentTitle~=Red Hat Directory'
+

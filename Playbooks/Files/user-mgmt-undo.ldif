@@ -33,5 +33,8 @@ changetype: delete
 dn: cn=Account GIDs,cn=Distributed Numeric Assignment Plugin,cn=plugins,cn=config
 changetype: delete
 
+dn: cn=anonymous_template,ou=people,dc=lab,dc=example,dc=com
+changetype: delete
+
 # dn: ou=Ranges,dc=lab,dc=example,dc=com  is a branch, use ldapdelete -r
 
