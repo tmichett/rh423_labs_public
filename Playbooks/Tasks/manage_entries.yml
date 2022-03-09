@@ -1,11 +1,11 @@
-- name: push ldapadd LDIF files to RHDS
+- name: push ldapadd LDIF files to system
   copy:
     src: "Files/{{ item }}"
     dest: /tmp/
   loop: "{{ add_entries_ldifs }}"
   when: add_entries_ldifs is defined
 
-- name: modify (add, change, delete) entries with each LDIF file.
+- name: add entries with each LDIF file.
   command: ldapadd -c -x -D "cn=Directory Manager" -w RedHat123 -f /tmp/{{ item }}
   loop: "{{ add_entries_ldifs }}"
   when: add_entries_ldifs is defined

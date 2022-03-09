@@ -1,0 +1,5 @@
+
+[repl-monitor-connections]
+rh423 = rhds.lab.example.com:389:cn=Directory Manager:RedHat123
+replica1 = replica1.lab.example.com:389:cn=Directory Manager:RedHat123
+replica2 = replica2.lab.example.com:389:cn=Directory Manager:RedHat123

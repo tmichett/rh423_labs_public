@@ -34,7 +34,7 @@
 
   tasks:
      - name: Check for existing agreements
-       command: dsconf {{ instance_name }} replication monitor
+       command: dsconf {{ instance_name }} replication monitor -c "{{ consumer_host }}:389:cn=Directory Manager:RedHat123"
        register: repl_monitor
 
      - name: Enable and create the replication manager account
