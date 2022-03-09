@@ -16,6 +16,7 @@
     - name: Check instance status (will fail if not found)
       command: dsctl {{ instance_name }} status
       register: instance_status
+      ignore_errors: true
 
     - name: install instance when not running  
       block:
@@ -39,6 +40,7 @@
     - name: Obtain list of certificates
       command: dsconf {{ instance_name }} security certificate list 
       register: server_cert_list
+      ignore_errors: true
 
     - name: Replace server cert when not found
       block:
@@ -50,7 +52,7 @@
           import_tasks: Tasks/sign_replace_cert.yml
           vars:
             cert_nick: replica2-cert
-      when: server_cert_list.stdout.find('replica1-cert') == -1
+      when: server_cert_list.stdout.find('replica2-cert') == -1
 
   handlers:
     - name: restart_instance

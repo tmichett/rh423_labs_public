@@ -9,9 +9,10 @@
     instance_name: replica1
     inf_file: dscreate_replica1.inf
   tasks:
-    - name: Check instance status
+    - name: Check instance status (will fail if not found)
       command: dsctl {{ instance_name }} status
       register: instance_status
+      ignore_errors: true
 
     - name: install instance when not running  
       block:
