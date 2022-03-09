@@ -15,20 +15,12 @@
     - name: configure CA Trust Database on host
       import_tasks: Tasks/update_ca_trust.yml
 
-    - name: Replace server cert
+    - name: Collect list of certificates
+      command: dsconf {{ instance_name }} security certificate list 
+      register: server_cert_list
+
+    - name: Replace server cert when rhds-cert not found.
       block:
-
-        - name: look for existin server cert
-          command: dsconf {{ instance_name }} security certificate list 
-          register: server_cert_list
-
-        - name: fail if not found
-          assert: 
-            that: server_cert_list.stdout.find('rhds-cert') != -1
-            success_msg: server cert appears to exist, no need to replace.
-            fail_msg: server cert does not exist, continue to creating CSR
-
-      rescue:
 
         - name: generate a CSR
           command: dsctl rh423 tls generate-server-cert-csr -s "CN=rhds.lab.example.com"
@@ -38,6 +30,7 @@
           vars:
             cert_nick: rhds-cert
          
+      when: server_cert_list.stdout.find('rhds-cert') == -1
   
   handlers:
      - name: restart_instance

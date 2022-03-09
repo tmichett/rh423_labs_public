@@ -13,20 +13,12 @@
     - name: ensure firewall ports are open
       import_tasks: Tasks/open_firewall.yml
 
-    - name: Ensure instance is configured
+    - name: Check instance status (will fail if not found)
+      command: dsctl {{ instance_name }} status
+      register: instance_status
+
+    - name: install instance when not running  
       block:
-
-        - name: check status of instance
-          command: dsctl {{ instance_name }} status
-          register: instance_status
-
-        - name: fail if not found
-          assert: 
-            that: instance_status.stdout.find('is running') != -1
-            success_msg: server instance appears to be running
-            fail_msg: instance does not appear to be running, configuring now
-      rescue:
-
 
         - name: copy inf file to server
           copy:
@@ -36,6 +28,7 @@
         - name: use dscreate with file
           command: "dscreate from-file /root/{{ inf_file }}"
 
+      when: instance_status.stdout.find('is running') == -1
 
     - name: configure CA certificate
       import_tasks: Tasks/add_CA_to_instance.yml
@@ -43,21 +36,13 @@
     - name: configure CA Trust Store
       import_tasks: Tasks/update_ca_trust.yml
 
-    - name: Replace server cert
+    - name: Obtain list of certificates
+      command: dsconf {{ instance_name }} security certificate list 
+      register: server_cert_list
+
+    - name: Replace server cert when not found
       block:
-
-        - name: look for existing server cert
-          command: dsconf {{ instance_name }} security certificate list 
-          register: server_cert_list
-
-        - name: fail if not found
-          assert: 
-            that: server_cert_list.stdout.find('replica2-cert') != -1
-            success_msg: server cert appears to exist, no need to replace.
-            fail_msg: server cert does not exist, continue to creating CSR
-
-      rescue:
-
+    
         - name: generate a CSR
           command: dsctl replica2 tls generate-server-cert-csr -s "CN=replica2.lab.example.com"
 
@@ -65,6 +50,7 @@
           import_tasks: Tasks/sign_replace_cert.yml
           vars:
             cert_nick: replica2-cert
+      when: server_cert_list.stdout.find('replica1-cert') == -1
 
   handlers:
     - name: restart_instance

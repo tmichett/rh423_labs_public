@@ -9,19 +9,12 @@
     instance_name: replica1
     inf_file: dscreate_replica1.inf
   tasks:
-    - name: Verify instance is installed
+    - name: Check instance status
+      command: dsctl {{ instance_name }} status
+      register: instance_status
+
+    - name: install instance when not running  
       block:
-
-        - name: check status of instance
-          command: dsctl {{ instance_name }} status
-          register: instance_status
-
-        - name: fail if not found
-          assert: 
-            that: instance_status.stdout.find('is running') != -1
-            success_msg: server instance appears to be running
-            fail_msg: instance does not appear to be running, continuing to install
-      rescue:
 
         - name: ensure packages are installed
           import_tasks: Tasks/install_packages.yml
@@ -37,6 +30,8 @@
         - name: use dscreate with file
           command: "dscreate from-file /root/{{ inf_file }}"
 
+      when: instance_status.stdout.find('is running') == -1
+
 
     - name: configure CA certificate
       import_tasks: Tasks/add_CA_to_instance.yml
@@ -44,20 +39,12 @@
     - name: configure CA Trust Database
       import_tasks: Tasks/update_ca_trust.yml
 
+    - name: Collect list of certificates
+      command: dsconf {{ instance_name }} security certificate list 
+      register: server_cert_list
+
     - name: Replace server cert
       block:
-
-        - name: look for existing server cert
-          command: dsconf {{ instance_name }} security certificate list 
-          register: server_cert_list
-
-        - name: fail if not found
-          assert: 
-            that: server_cert_list.stdout.find('replica1-cert') != -1
-            success_msg: server cert appears to exist, no need to replace.
-            fail_msg: server cert does not exist, continue to creating CSR
-
-      rescue:
 
         - name: generate a CSR
           command: dsctl replica1 tls generate-server-cert-csr -s "CN=replica1.lab.example.com"
@@ -66,6 +53,8 @@
           import_tasks: Tasks/sign_replace_cert.yml
           vars:
             cert_nick: replica1-cert
+
+      when: server_cert_list.stdout.find('replica1-cert') == -1
 
     - name: enable TLS
       command: dsconf replica1 config replace nsslapd-security=on

@@ -1,19 +1,12 @@
 # Requires variable instance_name
 
-- name: configure CA certificate
+
+- name: Collect list of CA certificates
+  command: dsconf {{ instance_name }} security ca-certificate list 
+  register: server_ca_cert_list
+
+- name: configure CA certificate when not found
   block:
-
-     - name: look for existing CA cert
-       command: dsconf {{ instance_name }} security ca-certificate list 
-       register: server_ca_cert_list
-
-     - name: fail if not found
-       assert: 
-         that: server_ca_cert_list.stdout.find('RH423CA') != -1
-         success_msg: CA cert appears to exist, no need to import.
-         fail_msg: CA cert not found, continue to adding to instance.
-
-  rescue:
 
      - name: copy CA cert to {{ instance_name }} host
        copy:
@@ -29,3 +22,4 @@
      - name: set the trust options for the ca cert
        command: dsconf {{ instance_name }} security ca-certificate set-trust-flags --flags "CT,," RH423CA
 
+  when: server_ca_cert_list.stdout.find('RH423CA') == -1
