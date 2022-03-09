@@ -16,6 +16,12 @@
            name: openldap-clients
            state: present
 
+     - name: Add ACIs to ou=Douments tree
+       import_tasks: Tasks/manage_entries.yml
+       vars:
+         modify_ldifs:
+            - add_access_aci.ldif
+
       - name: run ldapsearch commands
         command: ldapsearch -x -H {{ ldap_uri }} {{ item }}
         loop:
