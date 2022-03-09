@@ -6,6 +6,9 @@
 - name: Add user account entries with passwords
   import_playbook: client_users_solve.yml
 
+- name: Add aci for anonymous browsing of documents
+  import_playbook: access_add_acis.yml
+
 - name: Perform several queries on the documents to populate statistics
   hosts: servera
   vars:
@@ -15,12 +18,6 @@
         dnf:
            name: openldap-clients
            state: present
-
-      - name: Add ACIs to ou=Douments tree
-        import_tasks: Tasks/manage_entries.yml
-        vars:
-          modify_ldifs:
-            - add_access_aci.ldif
 
       - name: run ldapsearch commands
         command: ldapsearch -x -H {{ ldap_uri }} {{ item }}
